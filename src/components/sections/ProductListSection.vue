@@ -131,8 +131,8 @@ const handleClick = (name: string) => {
       position: absolute;
       top: 8px;
       right: 8px;
-      width: 32px;
-      height: 32px;
+      width: 26px;
+      height: 26px;
       background: none;
       border: none;
       cursor: pointer;
