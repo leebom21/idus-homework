@@ -10,7 +10,7 @@
 
 @mixin modal-container {
   background: var(--color-background);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   max-width: var(--modal-max-width);
   width: 100%;
 }

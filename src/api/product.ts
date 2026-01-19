@@ -1,8 +1,9 @@
 import type { Product } from '@/types/product';
+import type { ShortcutData } from '@/types/product';
+import type { GiftData } from '@/types/product';
 
-/**
- * 페이지별 상품 목록 가져오기
- */
+
+/* 상품 목록 가져오기*/
 export const fetchProductList = async (page: number): Promise<Product[]> => {
   try {
     const response = await fetch(`/server/data/page${page}.json`);
@@ -17,37 +18,40 @@ export const fetchProductList = async (page: number): Promise<Product[]> => {
   }
 };
 
-/**
- * 숏컷 목록 가져오기
- */
-export const fetchShortcutList = async () => {
+/* 숏컷 목록 가져오기*/
+export const fetchShortcutList = async (): Promise<ShortcutData> => {
   try {
     const response = await fetch('/server/data/unit-shortcut.json');
     if (!response.ok) {
       throw new Error('Failed to fetch shortcut');
     }
     const data = await response.json();
-    return data.items || [];
+    return data;
   } catch (error) {
     console.error('fetchShortcutList error:', error);
-    return [];
+    return { title: '', items: [] };
   }
 };
 
-/**
- * 선물 상품 목록 가져오기
- */
-export const fetchGiftList = async () => {
+/* 선물 상품 목록 가져오기*/
+export const fetchGiftList = async (): Promise<GiftData> => {
   try {
     const response = await fetch('/server/data/unit-gift.json');
     if (!response.ok) {
       throw new Error('Failed to fetch gift');
     }
     const data = await response.json();
-    return data.items || [];
+    return data;
   } catch (error) {
     console.error('fetchGiftList error:', error);
-    return [];
+    return { 
+      id: '', 
+      icon: '', 
+      targetId: '', 
+      title: [], 
+      themeTitle: '', 
+      items: [] 
+    };
   }
 };
 
