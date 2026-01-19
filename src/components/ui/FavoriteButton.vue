@@ -41,9 +41,6 @@ const handleToggle = () => {
   z-index: 10;
   transition: transform 0.2s;
 
-  &:active {
-    transform: scale(0.9);
-  }
 
   img {
     width: 100%;
