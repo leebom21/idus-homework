@@ -108,7 +108,6 @@ const loadMoreProducts = async () => {
 
   currentPage.value += 1
 
-  console.log(`📄 페이지 ${currentPage.value} 로딩...`)
   const data = await fetchProductList(currentPage.value)
   
   if (data.length === 0) {
@@ -134,8 +133,8 @@ useInfiniteScroll(sentinel, loadMoreProducts)
   margin: 0 auto;
   background-color: #f0f0f0;
   min-height: 100vh;
-  border-top: 6px solid var(--color-primary);
-  border-bottom: 6px solid var(--color-primary);
+  border-top: 4px solid var(--color-primary);
+  border-bottom: 4px solid var(--color-primary);
 
   .title {
     text-align: center;

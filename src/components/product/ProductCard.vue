@@ -3,17 +3,7 @@
     <div class="image-wrapper">
       <img :src="product.image" :alt="product.name" />
 
-      <!-- 찜하기 버튼 -->
-      <button 
-        class="favorite-button"
-        @click.stop="toggleFavorite(product.uuid)"
-        :aria-label="isFavorite(product.uuid) ? '찜 해제' : '찜하기'"
-      >
-        <img 
-          :src="isFavorite(product.uuid) ? favoriteOnIcon : favoriteOffIcon"
-          alt="찜하기"
-        />
-      </button>
+      <FavoriteButton :uuid="product.uuid" />
 
       <div
         v-if="product.promotion.labels.length > 0"
@@ -72,10 +62,9 @@
 </template>
 
 <script setup lang="ts">
-import { useFavorite } from "@/composables/useFavorite"
 import type { Product } from '@/types/product'
-import favoriteOnIcon from '@/assets/icon/favorite-on.png'
-import favoriteOffIcon from '@/assets/icon/favorite-off.png'
+import FavoriteButton from '@/components/ui/FavoriteButton.vue'
+
 
 defineProps<{
   product: Product
@@ -85,7 +74,6 @@ defineEmits<{
   (e: 'click'): void
 }>()
 
-const { toggleFavorite, isFavorite } = useFavorite()
 </script>
 
 <style scoped lang="scss">
@@ -105,29 +93,6 @@ const { toggleFavorite, isFavorite } = useFavorite()
       object-fit: cover;
     }
 
-    .favorite-button {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 26px;
-      height: 26px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      z-index: 10;
-      transition: transform 0.2s;
-
-      &:active {
-        transform: scale(0.9);
-      }
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-    }
   }
 
   .promotion-badge {

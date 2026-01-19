@@ -28,6 +28,7 @@
       >
         <div class="gift-image">
           <img :src="product.thumbImageUrl" :alt="product.name" />
+          <FavoriteButton :uuid="product.uuid" />
         </div>
         <p class="gift-name">{{ product.name }}</p>
         <div class="gift-price">
@@ -44,6 +45,8 @@ import { ref, computed, onMounted } from 'vue'
 import { fetchGiftList } from '@/api/product'
 import { useAlert } from '@/composables/useAlert'
 import type { GiftData } from '@/types/product'
+import FavoriteButton from '@/components/ui/FavoriteButton.vue'
+
 
 const data = ref<GiftData>({
   id: '',
@@ -127,6 +130,7 @@ onMounted(loadData)
           height: 100%;
           object-fit: cover;
         }
+
       }
       .gift-name {
         font-size: var(--font-size-sm);
@@ -160,11 +164,4 @@ onMounted(loadData)
     }
   }
 }
-
-
-
-
-
-
-
 </style>
