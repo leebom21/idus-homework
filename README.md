@@ -61,8 +61,8 @@ src/
 
 ### Alert 상태 관리
 
-Alert는 전역 UI 요소로 분리하여 composable로 상태를 관리했으며,
-UI는 기존 아이디어스 화면을 참고해 구현했습니다.
+Alert는 전역 UI 요소로 분리하여 composable로 상태를 관리,
+UI는 기존 아이디어스 화면을 참고해 구현
 
 
 
