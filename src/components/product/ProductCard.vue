@@ -3,7 +3,7 @@
     <img :src="product.image" :alt="product.name" />
     <p class="name">{{ product.name }}</p>
     <p class="price">
-      {{ product.discountedPrice.toLocaleString() }}원
+      {{ product.salePrice.toLocaleString() }}원
     </p>
   </article>
 </template>

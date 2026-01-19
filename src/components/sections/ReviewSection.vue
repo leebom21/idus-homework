@@ -1,6 +1,5 @@
 <template>
   <section class="review-section">
-    <!-- 타이틀 -->
     <h2 class="section-title">
       <span
         v-for="(part, index) in data.title"
@@ -15,7 +14,7 @@
       </span>
     </h2>
 
-    <!-- 리뷰 상품 슬라이드 -->
+    <!-- 슬라이드 -->
     <div class="review-slider-container">
       <div 
         class="review-slider"
@@ -25,17 +24,14 @@
         @touchend="handleTouchEnd"
       >
         <article
-          v-for="(product, idx) in data.products"
+          v-for="product in data.products"
           :key="product.uuid"
           class="review-item"
           ref="itemRefs"
-          @click="handleItemClick(product.productName, idx)"
+          @click="handleItemClick(product.productName)"
         >
-          
-
-
-          <!-- 상품 정보 -->
-          <div class="review-content">
+        
+        <div class="review-content">
 
             <div class="detail">
                 <div class="review-image">
@@ -99,7 +95,6 @@ const itemRefs = ref<HTMLElement[]>([])
 const currentIndex = ref(0)
 const touchStartX = ref(0)
 const touchEndX = ref(0)
-const touchStartTime = ref(0)
 const itemWidth = ref(0)
 const isClick = ref(true)
 
@@ -119,14 +114,12 @@ const loadData = async () => {
   
   await nextTick()
   
-  // 첫 번째 아이템의 실제 너비 측정
   if (itemRefs.value[0]) {
     itemWidth.value = itemRefs.value[0].offsetWidth
   }
 }
 
-const handleItemClick = (name: string, idx: number) => {
-  // 클릭이 아니면 (스와이프였으면) 무시
+const handleItemClick = (name: string) => {
   if (!isClick.value) {
     return
   }
@@ -135,8 +128,6 @@ const handleItemClick = (name: string, idx: number) => {
 
 const handleTouchStart = (e: TouchEvent) => {
   touchStartX.value = e.touches[0].clientX
-  touchEndX.value = e.touches[0].clientX
-  touchStartTime.value = Date.now()
   isClick.value = true
 }
 
@@ -150,32 +141,31 @@ const handleTouchMove = (e: TouchEvent) => {
   }
 }
 
-const handleTouchEnd = (e: TouchEvent) => {
-  const touchEndTime = Date.now()
-  const touchDuration = touchEndTime - touchStartTime.value
+const handleTouchEnd = () => {
   const diff = touchStartX.value - touchEndX.value
   const threshold = 50
 
-  // 클릭이 아닌 경우 (스와이프)
   if (!isClick.value && Math.abs(diff) > threshold) {
     if (diff > 0 && currentIndex.value < data.value.products.length - 1) {
-      // 왼쪽 스와이프 (다음)
-      currentIndex.value++
+
+        currentIndex.value++
       updateSliderPosition()
     } else if (diff < 0 && currentIndex.value > 0) {
-      // 오른쪽 스와이프 (이전)
-      currentIndex.value--
+
+        currentIndex.value--
       updateSliderPosition()
     }
   }
 
   touchStartX.value = 0
   touchEndX.value = 0
-  touchStartTime.value = 0
 }
 
 onMounted(loadData)
+
 </script>
+
+
 <style scoped lang="scss">
 .review-section {
   padding: 24px 0;

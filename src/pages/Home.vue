@@ -6,7 +6,7 @@
       <!-- 상품 그리드 (2줄씩) -->
       <ProductListSection
         v-if="section.type === 'product'"
-        :products="section.products"
+        :products="section.products || []"
       />
 
       <!-- 기타 섹션 -->
@@ -41,6 +41,11 @@ interface LayoutSection {
   rowLimit?: number
 }
 
+interface DisplaySection {
+  type: SectionType
+  products?: Product[]
+}
+
 // 레이아웃 정의
 const layoutSections: LayoutSection[] = [
   { type: 'product', rowLimit: 2 },
@@ -54,7 +59,6 @@ const layoutSections: LayoutSection[] = [
 
 const allProducts = ref<Product[]>([])
 const currentPage = ref(1)
-const maxPage = 3
 const hasMore = ref(true)
 const sentinel = ref<HTMLElement | null>(null)
 
@@ -66,39 +70,24 @@ const sectionMap: Record<SectionType, any> = {
 }
 
 // 레이아웃에 맞춰 섹션과 상품을 배치
-const displaySections = computed(() => {
-  const sections: any[] = []
+const displaySections = computed<DisplaySection[]>(() => {
+  const sections: DisplaySection[] = []
   let productIndex = 0
   const itemsPerRow = 2
 
   for (const layout of layoutSections) {
     if (layout.type === 'product') {
-      if (layout.rowLimit) {
-        const itemCount = layout.rowLimit * itemsPerRow
-        const products = allProducts.value.slice(productIndex, productIndex + itemCount)
-        
-        if (products.length > 0) {
-          sections.push({
-            type: 'product',
-            products
-          })
-          productIndex += products.length
-        }
-      } else {
-        // 나머지 전부
-        const products = allProducts.value.slice(productIndex)
-        if (products.length > 0) {
-          sections.push({
-            type: 'product',
-            products
-          })
-          productIndex = allProducts.value.length
-        }
+      const itemCount = layout.rowLimit ? layout.rowLimit * itemsPerRow : Infinity
+      const products = allProducts.value.slice(productIndex, 
+        layout.rowLimit ? productIndex + itemCount : undefined
+      )
+      
+      if (products.length > 0) {
+        sections.push({ type: 'product', products })
+        productIndex += products.length
       }
     } else {
-      sections.push({
-        type: layout.type
-      })
+      sections.push({ type: layout.type })
     }
   }
 
@@ -116,13 +105,7 @@ const loadInitialProducts = async () => {
 const loadMoreProducts = async () => {
   if (!hasMore.value) return
 
-  // 다음 페이지
   currentPage.value += 1
-
-  if (currentPage.value > maxPage) {
-    hasMore.value = false
-    return
-  }
 
   console.log(`📄 페이지 ${currentPage.value} 로딩...`)
   const data = await fetchProductList(currentPage.value)
@@ -132,7 +115,6 @@ const loadMoreProducts = async () => {
     return
   }
 
-  // 기존 데이터에 추가
   allProducts.value = [...allProducts.value, ...data]
 }
 

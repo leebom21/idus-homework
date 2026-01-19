@@ -8,7 +8,7 @@
           v-for="(item, index) in data.items"
           :key="`shortcut-${item.id}-${index}`"
           class="shortcut-item"
-          @click="handleClick(item.label)"
+          @click="handleClick()"
         >
           <div class="shortcut-image">
             <img :src="item.imageUrl" :alt="item.label" />
@@ -38,7 +38,7 @@ const loadData = async () => {
   data.value = result
 }
 
-const handleClick = (label: string) => {
+const handleClick = () => {
   openAlert('숏컷 상세 페이지 이동')
 }
 
