@@ -28,13 +28,13 @@ defineEmits<{
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    border-radius: 8px;
-    background-color: #f5f5f5;
+    border-radius: var(--radius-md);
+    background-color: var(--color-background-gray);
   }
 
   .name {
-    margin-top: 8px;
-    font-size: 14px;
+    margin-top: var(--spacing-sm);
+    font-size: var(--font-size-base);
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -43,9 +43,9 @@ defineEmits<{
   }
 
   .price {
-    margin-top: 4px;
-    font-size: 16px;
-    font-weight: 700;
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-lg);
+     font-weight: var(--font-weight-bold);;
   }
 }
 </style>

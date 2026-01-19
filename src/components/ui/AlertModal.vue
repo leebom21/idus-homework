@@ -29,35 +29,36 @@ const { isVisible, message, closeAlert } = useAlert()
   align-items: center;
   justify-content: center;
   z-index: 1000;
-}
 
-.modal-container {
-  background: white;
-  border-radius: 4px;
-  padding: 24px;
-  max-width: 320px;
-  width: 90%;
-}
+  .modal-container {
+    background: var(--color-background);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-2xl);
+    max-width: 320px;
+    width: 90%;
 
-.modal-message {
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 1.5;
-  word-break: keep-all;
-}
+    .modal-message {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      line-height: 1.5;
+      word-break: keep-all;
+      font-size: var(--font-size-base);
+    }
 
-.modal-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #ef7014;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
+    .modal-button {
+      width: 100%;
+      padding: var(--spacing-md);
+      background-color: var(--color-primary);
+      color: var(--color-background);
+      border: none;
+      border-radius: var(--radius-sm);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
 
-  &:active {
-    background-color: #ef7014;
+      &:active {
+        background-color: var(--color-primary);
+      }
+    }
   }
 }
 

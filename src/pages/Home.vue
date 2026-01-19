@@ -19,12 +19,6 @@
     <!-- 무한 스크롤 감지 -->
     <div ref="sentinel" class="sentinel"></div>
 
-    <!-- 로딩 표시 -->
-    <div v-if="isLoadingMore" class="loading-more">
-      <div class="spinner"></div>
-      <p>상품을 더 불러오는 중...</p>
-    </div>
-
     <AlertModal />
   </main>
 </template>
@@ -61,7 +55,6 @@ const layoutSections: LayoutSection[] = [
 const allProducts = ref<Product[]>([])
 const currentPage = ref(1)
 const maxPage = 3
-const isLoadingMore = ref(false)
 const hasMore = ref(true)
 const sentinel = ref<HTMLElement | null>(null)
 
@@ -121,7 +114,7 @@ const loadInitialProducts = async () => {
 
 // 무한 스크롤로 추가 로딩
 const loadMoreProducts = async () => {
-  if (!hasMore.value || isLoadingMore.value) return
+  if (!hasMore.value) return
 
   // 다음 페이지
   currentPage.value += 1
@@ -131,22 +124,16 @@ const loadMoreProducts = async () => {
     return
   }
 
-  isLoadingMore.value = true
-
-  try {
-    console.log(`📄 페이지 ${currentPage.value} 로딩...`)
-    const data = await fetchProductList(currentPage.value)
-    
-    if (data.length === 0) {
-      hasMore.value = false
-      return
-    }
-
-    // 기존 데이터에 추가
-    allProducts.value = [...allProducts.value, ...data]
-  } finally {
-    isLoadingMore.value = false
+  console.log(`📄 페이지 ${currentPage.value} 로딩...`)
+  const data = await fetchProductList(currentPage.value)
+  
+  if (data.length === 0) {
+    hasMore.value = false
+    return
   }
+
+  // 기존 데이터에 추가
+  allProducts.value = [...allProducts.value, ...data]
 }
 
 onMounted(() => {
@@ -163,53 +150,25 @@ useInfiniteScroll(sentinel, loadMoreProducts)
   margin: 0 auto;
   background-color: #f0f0f0;
   min-height: 100vh;
-}
+  border-top: 6px solid var(--color-primary);
+  border-bottom: 6px solid var(--color-primary);
 
-.title {
+  .title {
     text-align: center;
-    padding: 19px 0;
+    padding: 19px 0 0;
     margin: 0 auto;
-    background: #ffffff;
+    background: var(--color-background);
     width: 100%;
-    border-bottom: 6px solid #e3e3e3ba;
+
     img {
-        width: 100px;
-        max-width: 158px;
-        display: inline-flex;
+      width: 100px;
+      max-width: 158px;
+      display: inline-flex;
     }
-}
-
-.sentinel {
-  height: 1px;
-  margin: 20px 0;
-}
-
-.loading-more {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  gap: 12px;
-  
-  p {
-    color: #666;
-    font-size: 14px;
   }
-}
 
-.spinner {
-  width: 24px;
-  height: 24px;
-  border: 3px solid #f5f5f5;
-  border-top-color: #ff6b35;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+  .sentinel {
+    height: 1px;
   }
 }
 </style>

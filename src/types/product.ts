@@ -82,6 +82,39 @@ export interface GiftData {
   items: GiftProduct[];
 }
 
-export interface ReviewProduct extends Product {
-  review: Review;
+export interface ReviewTitlePart {
+  text: string;
+  types: string[];
+  size: number;
+  color: string;
+  colorWeb: string;
+  bgColor: string | null;
+  bgColorWeb: string | null;
+}
+
+export interface ReviewInfoPart {
+  text: string;
+  types: string[];
+  size: number;
+  color: string;
+  colorWeb: string;
+  bgColor: string | null;
+  bgColorWeb: string | null;
+}
+
+export interface ReviewProduct {
+  uuid: string;
+  image: string;
+  productName: string;
+  artistName: string;
+  saleRate: number;
+  price: number;
+  reviewInfo: ReviewInfoPart[];
+  reviewRate: number;
+  reviewCount: number;
+}
+
+export interface ReviewData {
+  title: ReviewTitlePart[];
+  products: ReviewProduct[];
 }

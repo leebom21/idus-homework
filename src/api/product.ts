@@ -1,6 +1,7 @@
 import type { Product } from '@/types/product';
 import type { ShortcutData } from '@/types/product';
 import type { GiftData } from '@/types/product';
+import type { ReviewData } from '@/types/product';
 
 
 /* 상품 목록 가져오기*/
@@ -55,19 +56,20 @@ export const fetchGiftList = async (): Promise<GiftData> => {
   }
 };
 
-/**
- * 리뷰 상품 목록 가져오기
- */
-export const fetchReviewList = async () => {
+/* 리뷰 상품 목록 가져오기*/
+export const fetchReviewList = async (): Promise<ReviewData> => {
   try {
     const response = await fetch('/server/data/unit-review.json');
     if (!response.ok) {
       throw new Error('Failed to fetch review');
     }
     const data = await response.json();
-    return data.items || [];
+    return data;
   } catch (error) {
     console.error('fetchReviewList error:', error);
-    return [];
+    return { 
+      title: [], 
+      products: [] 
+    };
   }
 };

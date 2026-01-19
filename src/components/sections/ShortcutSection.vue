@@ -48,73 +48,73 @@ onMounted(loadData)
 <style scoped lang="scss">
 .shortcut-section {
   padding: 24px 0;
-  background-color: #fff;
+  background-color: var(--color-background);
   margin: 6px 0;
-}
 
-.section-title {
-  font-size: 18px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #212121;
-}
-
-.shortcut-scroll-wrapper {
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  
-  &::-webkit-scrollbar {
-    display: none;
+  .section-title {
+    font-size: 18px;
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--color-primary-dark);
   }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
 
-.shortcut-list {
-  display: flex;
-  gap: 16px;
-  padding: 0 16px;
-  min-width: min-content;
-}
+  .shortcut-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 
-.shortcut-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.2s;
+    .shortcut-list {
+      display: flex;
+      gap: var(--spacing-lg);
+      padding: 0 16px;
+      min-width: min-content;
 
-  &:active {
-    transform: scale(0.95);
+      .shortcut-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: transform 0.2s;
+
+        &:active {
+          transform: scale(0.95);
+        }
+
+        .shortcut-image {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          overflow: hidden;
+          background-color: var(--color-background);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .shortcut-label {
+          font-size: var(--font-size-sm);
+          color: var(--color-text-secondary);
+          text-align: center;
+          white-space: nowrap;
+          max-width: 80px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
   }
-}
-
-.shortcut-image {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
-.shortcut-label {
-  font-size: 12px;
-  color: #666;
-  text-align: center;
-  white-space: nowrap;
-  max-width: 80px;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 </style>
