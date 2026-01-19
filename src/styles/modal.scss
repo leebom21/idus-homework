@@ -1,0 +1,16 @@
+@mixin modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--modal-overlay-bg);
+  z-index: var(--modal-z-index);
+}
+
+@mixin modal-container {
+  background: var(--color-background);
+  border-radius: var(--radius-lg);
+  max-width: var(--modal-max-width);
+  width: 100%;
+}
