@@ -10,6 +10,18 @@
         <div class="image-wrapper">
           <img :src="product.image" :alt="product.name" />
 
+          <!-- 찜하기 버튼 -->
+          <button 
+            class="favorite-button"
+            @click.stop="toggleFavorite(product.uuid)"
+            :aria-label="isFavorite(product.uuid) ? '찜 해제' : '찜하기'"
+          >
+            <img 
+              :src="isFavorite(product.uuid) ? favoriteOnIcon : favoriteOffIcon"
+              alt="찜하기"
+            />
+          </button>
+
           <div
             v-if="product.promotion.labels.length > 0"
             class="promotion-badge"
@@ -69,18 +81,22 @@
 </template>
 
 <script setup lang="ts">
-import { useAlert } from "@/composables/useAlert";
-import type { Product } from "@/types/product";
+import { useAlert } from "@/composables/useAlert"
+import { useFavorite } from "@/composables/useFavorite"
+import type { Product } from "@/types/product"
+import favoriteOnIcon from '@/assets/icon/favorite-on.png'
+import favoriteOffIcon from '@/assets/icon/favorite-off.png'
 
 defineProps<{
-  products: Product[];
-}>();
+  products: Product[]
+}>()
 
-const { openAlert } = useAlert();
+const { openAlert } = useAlert()
+const { toggleFavorite, isFavorite } = useFavorite()
 
 const handleClick = (name: string) => {
-  openAlert(`작품 상세 페이지 이동 - ${name}`);
-};
+  openAlert(`작품 상세 페이지 이동 - ${name}`)
+}
 </script>
 
 <style scoped lang="scss">
@@ -109,8 +125,30 @@ const handleClick = (name: string) => {
       width: 100%;
       aspect-ratio: 1;
       object-fit: cover;
-      border-radius: var(--radius-md);
-      background-color: var(--color-background-gray);
+    }
+
+    .favorite-button {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 10;
+      transition: transform 0.2s;
+
+      &:active {
+        transform: scale(0.9);
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
     }
   }
 

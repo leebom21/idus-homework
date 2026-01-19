@@ -36,6 +36,18 @@
             <div class="detail">
                 <div class="review-image">
                     <img :src="product.image" :alt="product.productName" />
+                    
+                    <!-- 찜하기 버튼 -->
+                    <button 
+                      class="favorite-button"
+                      @click.stop="toggleFavorite(product.uuid)"
+                      :aria-label="isFavorite(product.uuid) ? '찜 해제' : '찜하기'"
+                    >
+                      <img 
+                        :src="isFavorite(product.uuid) ? favoriteOnIcon : favoriteOffIcon"
+                        alt="찜하기"
+                      />
+                    </button>
                 </div>
                 <div class="review-detail">
                     <p class="artist-name">{{ product.artistName }}</p>
@@ -83,7 +95,10 @@
 import { ref, onMounted, nextTick } from 'vue'
 import { fetchReviewList } from '@/api/product'
 import { useAlert } from '@/composables/useAlert'
+import { useFavorite } from '@/composables/useFavorite'
 import type { ReviewData } from '@/types/product'
+import favoriteOnIcon from '@/assets/icon/favorite-on.png'
+import favoriteOffIcon from '@/assets/icon/favorite-off.png'
 
 const data = ref<ReviewData>({
   title: [],
@@ -99,6 +114,7 @@ const itemWidth = ref(0)
 const isClick = ref(true)
 
 const { openAlert } = useAlert()
+const { toggleFavorite, isFavorite } = useFavorite()
 
 const updateSliderPosition = () => {
   if (!sliderRef.value || !itemWidth.value) return
@@ -134,7 +150,6 @@ const handleTouchStart = (e: TouchEvent) => {
 const handleTouchMove = (e: TouchEvent) => {
   touchEndX.value = e.touches[0].clientX
   
-  // 5px 이상 움직이면 스와이프로 판단
   const diff = Math.abs(touchStartX.value - touchEndX.value)
   if (diff > 5) {
     isClick.value = false
@@ -147,12 +162,10 @@ const handleTouchEnd = () => {
 
   if (!isClick.value && Math.abs(diff) > threshold) {
     if (diff > 0 && currentIndex.value < data.value.products.length - 1) {
-
-        currentIndex.value++
+      currentIndex.value++
       updateSliderPosition()
     } else if (diff < 0 && currentIndex.value > 0) {
-
-        currentIndex.value--
+      currentIndex.value--
       updateSliderPosition()
     }
   }
@@ -161,10 +174,10 @@ const handleTouchEnd = () => {
   touchEndX.value = 0
 }
 
-onMounted(loadData)
-
+onMounted(() => {
+  loadData()
+})
 </script>
-
 
 <style scoped lang="scss">
 .review-section {
@@ -234,6 +247,31 @@ onMounted(loadData)
           height: 100%;
           object-fit: cover;
           pointer-events: none;
+        }
+
+        .favorite-button {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          width: 28px;
+          height: 28px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          z-index: 10;
+          pointer-events: auto;
+          transition: transform 0.2s;
+
+          &:active {
+            transform: scale(0.9);
+          }
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
         }
       }
 

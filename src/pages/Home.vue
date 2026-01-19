@@ -3,13 +3,11 @@
     <div class="title"><img src="https://image.idus.com/image/files/18a059f4ff11434db9a6aec6092818cd.png" alt="" ></div>
 
     <template v-for="(section, index) in displaySections" :key="`section-${index}`">
-      <!-- 상품 그리드 (2줄씩) -->
       <ProductListSection
         v-if="section.type === 'product'"
         :products="section.products || []"
       />
 
-      <!-- 기타 섹션 -->
       <component
         v-else
         :is="sectionMap[section.type]"
@@ -27,6 +25,7 @@
 import { ref, computed, onMounted, markRaw } from 'vue'
 import { fetchProductList } from '@/api/product'
 import { useInfiniteScroll } from '@/composables/useInfiniteScroll'
+import { useFavorite } from '@/composables/useFavorite'
 import ProductListSection from '@/components/sections/ProductListSection.vue'
 import ShortcutSection from '@/components/sections/ShortcutSection.vue'
 import GiftSection from '@/components/sections/GiftSection.vue'
@@ -68,6 +67,8 @@ const sectionMap: Record<SectionType, any> = {
   gift: markRaw(GiftSection),
   review: markRaw(ReviewSection)
 }
+
+const { loadFavorites } = useFavorite()
 
 // 레이아웃에 맞춰 섹션과 상품을 배치
 const displaySections = computed<DisplaySection[]>(() => {
@@ -120,6 +121,7 @@ const loadMoreProducts = async () => {
 
 onMounted(() => {
   loadInitialProducts()
+  loadFavorites()
 })
 
 // 무한 스크롤 설정
